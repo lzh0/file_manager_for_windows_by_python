@@ -6,6 +6,21 @@ __pycache__/
 # C extensions
 *.so
 
+# Local save files hash value file
+*.csv
+*.CSV
+*.db
+*.DB
+*.db3
+*.DB3
+*.json
+*.JSON
+*.myd
+*.MYD
+#vscode
+.VSCODE/
+.vscode/
+
 # Distribution / packaging
 .Python
 build/
