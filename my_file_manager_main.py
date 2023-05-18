@@ -93,7 +93,8 @@ def subprocess_popen(command_str):    #功能：执行指定命令行,并且既�
             return result
 
 def generate_cmd_str_of_hashing_file(global_file_path:str, hash_algorithm_name:str):   #生成终端命令：通过调用winodws系统API，计算文件hash值
-    global_file_path.replace("'", '"')  #hash命令中字符串必须用双引号"包裹，而不能用单引号'
+    global_file_path.replace("'", '"')  #hash命令中字符串必须用双引号"包裹，而不能用单引号' 
+    global_file_path='"'+global_file_path+'"'   #cmd的hash命令必须用双引号""（单引号'不行）包裹文件路径，否则若路径中有空格会导致命令传输参数数量出错
     
     if (global_file_path[-1] == "\\"):  #检测路径尾端是否正确（是文件名而不是路径符\\）
         raise Exception("file_path error!!! your input global_file_path is: ", global_file_path)
@@ -173,6 +174,7 @@ def write_in_csv_by_design_format(csv_file_object:object, global_file_path:str,h
 def get_all_files_path_str_list_in(dir_path):   #功能：遍历获取指定路径下的所有文件
     # https://zhuanlan.zhihu.com/p/149824829
     files_path_str_list = [] #文件列表，用于存储
+    # [print([print(home,"\\",filename) for filename in files]) for home,dirs,files in os.walk("C:\\Users\\me\\Desktop\\出BUG乱码的路径")]
     for home, dirs, files in os.walk(dir_path): #遍历输入输入路径下的所有文件
         for filename in files:
             # 文件名列表，包含完整路径
@@ -192,12 +194,14 @@ if __name__ == "__main__":
     hash_algorithm_name="MD5"
     print("start!")
     my_csv_file=NewFile(file_encode_format="GBK")   #若文件以utf-8编码，在excel中打开会乱码（需修改默认设置）；若以GBK编码，在vscode中打开会乱码（需要更改文件编码，以UTF-8打开）
+    #microsoft excel 支持unicode 但不支持UTF-8, 并且在winodws中文系统中默认使用GBK格式打开文件
     #csv路径数据文件格式：
     #第一行：用户输入路径（指定遍历的路径）
     #第二行：表头写入
     #第三、四、...：数据
-    
-    user_input_path = input("file_path: ").replace(" ","")  #获取指定的遍历路径 #健壮性有待提升，建议形成路径规则自动滤除
+    user_input_path = 'C:\\Users\\me\\Desktop\\出BUG乱码的路径\\U64G\\手机\\Apk'
+    user_input_path = 'C:\\Users\\me\\Desktop\\出BUG乱码的路径'
+    #user_input_path = input("file_path: ").replace(" ","")  #获取指定的遍历路径 #健壮性有待提升，建议形成路径规则自动滤除
     sheet_header_str=(  #表头构成
         "filename,"+ #文件名
         "extension name,"+   #文件拓展名
