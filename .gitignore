@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+#test path
+scan_test
+
 # Local save files hash value file
 *.csv
 *.CSV
